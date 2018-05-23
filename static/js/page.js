@@ -1,3 +1,4 @@
+//(ev.src,ev.in.css.width)
 var pagelist = {
     template: `
 			<section :class="'swiper-slide swiper-slide'+k" >
@@ -5,7 +6,7 @@ var pagelist = {
 				<div v-for="(ev,key) in page.elements" :index="key" class="item" :class=" k == current ? 'showpage':'nopage'" :style="showoutstyle(ev)">
 					<div class="amious" :style="showanim(ev.anim)" style="overflow:hidden;">
 						<div v-if="(ev.type==2 || ev.type==5)" class="el-text" :style="showstyle(ev.in.css)" @click="picClick(ev.in.properties)" v-html="showcontent(ev.content)"></div>
-						<img v-if="ev.type==4" class="el-bgimg" :style="showimgstyle(ev.in.css)" :src="showimg(ev.src,ev.in.css.width)" @click="picClick(ev.in.properties)"/>
+						<img v-if="ev.type==4" class="el-bgimg" :style="showimgstyle(ev.in.css)" :src="ev.src" @click="picClick(ev.in.properties)"/>
 						<div v-if="ev.type=='h'" :class="'svg'+key+'_'+k" data-flag="0" class="el-shape" :style="showstyle(ev.in.css)" v-html="showshape(ev,key+'_'+k)"></div>
 						<count-down v-if="ev.type=='countDown'" class="countDown-text" :style="showstyle(ev.in.css)" :start-time="startTime" :end-time="parseInt(ev.in.properties.deadlineTime)" ></count-down>
 						<div v-if="ev.type==='m'" style="width:100%;height:100%;position:relative"> 
@@ -160,6 +161,7 @@ var pagelist = {
        
       var flag=true;
       var formParam = {};
+      var userArr = []
       $(ev.target).parent().parent().parent().find('input').each(function(){
         console.log($(this).val())
           if($(this).val()=='' && $(this).data('flag')){
@@ -168,44 +170,38 @@ var pagelist = {
             return;
           }else{
             formParam[$(this).attr('id')]=$(this).val();
+            userArr.push($(this).val())
           }
           
         });
-        //console.log(flag)
+   
         if(flag===false){
           return;
         }
-         var param = {
-          sceneid:sceneid,
-          pageid: pageid,
-          formid: data.formid,
-          content:formParam
+     
+        var param = {
+          name:userArr[0],
+          phone:userArr[1],
+          describe:userArr[2]
         }
+        fetch('https://wd8489702998bihasp.wilddogio.com/user.json',{
+           method:"post",
+           headers:{
+             "Content-type":"application/json"
+           },
+           body:JSON.stringify(param)
+         })
+           .then(res=>res.json())
+           .then((data)=>{
+         
+              layer.msg('您已经提交成功，请准时参加！', function(){
+                //do something
+                window.location.reload()   
+              }); 
+            
+            })
+           .catch(err=>console.log(err))
         
-         $.ajax({
-            method: 'post',
-            url: 'http://www.yaoyue365.com/api/scene/sceneform',
-            data: param,
-            async: false,
-            success: function(res){
-              
-              if (res.code == 200) {
-                if (res.status == true) {
-                  layer.msg(data.in.properties.ok,{},function(){
-                      $('.inputs').find('input').val('');
-                      $('.inputs').find('input').nextAll('span').show();
-                  });                   
-                } else {
-                  layer.msg(res.msg,{time:1000},function(){
-                      $('.inputs').find('input').val('');
-                      $('.inputs').find('input').nextAll('span').show();
-                  });  
-                }
-              } else {
-                layer.msg(res.msg);
-              }
-          }
-        });
         
       },
       //提交表单
