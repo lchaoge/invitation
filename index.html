@@ -91,7 +91,7 @@
 			<div class="audio_btn" @click="playOrPauseMusic" :class="isplay ? 'play': ''">
 			  <img :src="isplay ? 'static/images/musicon.png' : 'static/images/musicoff.png' " >
 			</div>
-			<audio id="sceneaudio" :src="showimg('http://res.yaoyue365.com/syspic/201804/mp3/734bdf3b22904124958a67dd3b5b717a.mp3')" autoplay="autoplay"  loop="loop"  ></audio>
+			<audio id="sceneaudio" :src="showimg('http://res.yaoyue365.com/syspic/201804/mp3/734bdf3b22904124958a67dd3b5b717a.mp3')" autoplay="autoplay" loop="loop"></audio>
 			<div class="swiper-container" >
 			  <div class="swiper-wrapper">
 			    <my-page :page="page" :key="index" :k="index" :bili1="bili1" :bili2="bili2" :current="currentpage" v-for="(page,index) in pagelists"></my-page>
@@ -5121,8 +5121,8 @@
 		
 		  wx.ready(function () {
 			  var shareData64 = {
-				title: "高端大气韩式婚礼邀请函结婚请柬",
-				desc: "高端大气韩式婚礼邀请函结婚请柬。小清新,花,时尚,唯美,浪漫",
+				title: "刘勇&李艳华的婚礼邀请",
+				desc: "刘勇&李艳华的婚礼邀请。小清新,花,时尚,唯美,浪漫",
 				link: "http://"+window.location.host+"/v/YC56mIuAVFuJ",
 				imgUrl: "http://res.yaoyue365.com/syspic/201804/img/thumb_220_220_482a64c7e352ac53d69646b90e4ac46c.jpg"
 			  };

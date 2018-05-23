@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	</head>
+	<body>
+		<div class="wrapper" id="app">
+		  <div class="content-main">
+		  	<form class="form-inline" style="padding: 20px;" v-if="false">
+				  <div class="form-group">
+				    <label for="exampleInputName2">姓名：</label>
+				    <input type="text" class="form-control" v-model="pageData.name" placeholder="请输入姓名">
+				  </div>
+				  <div class="form-group">
+				    <label for="exampleInputEmail2">手机号：</label>
+				    <input type="email" class="form-control" v-model="pageData.phone" placeholder="请输入手机号">
+				  </div>
+				  <button type="submit" class="btn btn-success" @click="queryEvt">查看</button>
+				</form>
+				<div style="padding: 20px 20px;">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>姓名</th>
+								<th>手机号</th>
+								<th>备注</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for='item in pageData.list'>
+								<td>{{item.name}}</td>
+								<td>{{item.phone}}</td>
+								<td>{{item.describe}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		  </div>
+		</div>
+		<script src="static/js/vue.js"></script>
+		<script>
+		  var vm = new Vue({
+        el: '#app',
+				data(){
+					return {
+						pageData:{
+							name:"",
+							phone:"",
+							list:[]	
+						}
+						
+					}
+				},
+				created(){
+					this.queryEvt()
+				},
+				methods:{
+					queryEvt(){
+						fetch("https://wd8489702998bihasp.wilddogio.com/user.json")
+							.then(res=>res.json())
+							.then(data=>{
+								console.log(data)
+								this.pageData.list = data;
+							})
+							.catch(err=>console.log(err))
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
